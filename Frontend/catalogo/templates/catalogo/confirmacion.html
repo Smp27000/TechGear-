@@ -1,0 +1,19 @@
+{% extends "catalogo/base.html" %}
+{% block title %}Pedido confirmado · TechGear{% endblock %}
+{% block content %}
+
+<div class="confirm-box">
+  <div class="confirm-icon">✓</div>
+  <h1>¡Pedido confirmado!</h1>
+  <p class="muted">Tu pedido fue enviado correctamente a inventario.</p>
+
+  {% if fallidos %}
+    <div class="alert error" style="text-align:left; margin-top:24px;">
+      Algunos productos no se pudieron procesar (ID: {{ fallidos|join:", " }}). Intenta de nuevo desde el carrito.
+    </div>
+  {% endif %}
+
+  <a href="{% url 'index' %}" class="btn" style="margin-top:24px;">Seguir comprando</a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "catalogo/base.html" %}
+{% block title %}Carrito · TechGear{% endblock %}
+{% block content %}
+
+<h1>Tu carrito</h1>
+
+{% if error %}<p class="error">{{ error }}</p>{% endif %}
+
+{% if not items %}
+  <div class="empty-state">
+    <p>Tu carrito está vacío.</p>
+    <a href="{% url 'index' %}" class="btn">Ir al catálogo</a>
+  </div>
+{% else %}
+  <table class="cart-table">
+    <thead>
+      <tr><th>Producto</th><th>Cantidad</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+      <tr>
+        <td>
+          <a href="{% url 'detalle' item.id %}">{{ item.nombre }}</a>
+          <span class="muted-small">{{ item.material }}</span>
+        </td>
+        <td>
+          <form method="post" action="{% url 'actualizar_carrito' item.id %}" class="stepper">
+            {% csrf_token %}
+            <button type="submit" name="accion" value="restar" class="step-btn">−</button>
+            <span>{{ item.cantidad }}</span>
+            <button type="submit" name="accion" value="sumar" class="step-btn">+</button>
+          </form>
+        </td>
+        <td>
+          <form method="post" action="{% url 'actualizar_carrito' item.id %}">
+            {% csrf_token %}
+            <button type="submit" name="accion" value="eliminar" class="link-danger">Eliminar</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <form method="post" action="{% url 'checkout' %}" class="checkout-box">
+    {% csrf_token %}
+    <p>{{ items|length }} producto(s) distinto(s) en tu carrito.</p>
+    <button type="submit" class="btn">Confirmar pedido</button>
+  </form>
+{% endif %}
+
+{% endblock %}

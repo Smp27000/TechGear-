@@ -1,0 +1,33 @@
+{% extends "catalogo/base.html" %}
+{% block title %}Nuevo producto · TechGear{% endblock %}
+{% block content %}
+
+<a class="back" href="{% url 'index' %}">&larr; Volver al catálogo</a>
+<h1>Nuevo producto</h1>
+
+{% if error %}<p class="error">{{ error }}</p>{% endif %}
+
+<form class="form-card" method="post">
+  {% csrf_token %}
+  <div class="field">
+    <label for="nombre">Nombre</label>
+    <input type="text" id="nombre" name="nombre" minlength="3" required>
+  </div>
+  <div class="field">
+    <label for="material">Material</label>
+    <input type="text" id="material" name="material" minlength="3" required>
+  </div>
+  <div class="field-row">
+    <div class="field">
+      <label for="peso">Peso (kg)</label>
+      <input type="number" id="peso" name="peso" step="0.01" min="0.01" required>
+    </div>
+    <div class="field">
+      <label for="valoracion">Valoración</label>
+      <input type="number" id="valoracion" name="valoracion" step="0.1" min="0.1" max="5" required>
+    </div>
+  </div>
+  <button type="submit" class="btn">Guardar producto</button>
+</form>
+
+{% endblock %}

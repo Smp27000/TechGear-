@@ -5,6 +5,7 @@ import asyncio
 from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
 
+
 load_dotenv()
 
 MONGO_URI = os.getenv("MONGODB_URI")
@@ -45,3 +46,6 @@ async def test_collection():
         print(f"Error al conectar a MongoDB Atlas: {e}")
 if __name__ == "__main__":
     asyncio.run(test_collection())
+
+productos_collection = db["productos"]
+pedidos_collection = db["pedidos"]
