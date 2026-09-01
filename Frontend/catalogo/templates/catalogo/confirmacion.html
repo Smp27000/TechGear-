@@ -1,19 +1,57 @@
 {% extends "catalogo/base.html" %}
-{% block title %}Pedido confirmado · TechGear{% endblock %}
+{% block title %}¡Orden Recibida! · TechGear{% endblock %}
 {% block content %}
 
-<div class="confirm-box">
-  <div class="confirm-icon">✓</div>
-  <h1>¡Pedido confirmado!</h1>
-  <p class="muted">Tu pedido fue enviado correctamente a inventario.</p>
-
-  {% if fallidos %}
-    <div class="alert error" style="text-align:left; margin-top:24px;">
-      Algunos productos no se pudieron procesar (ID: {{ fallidos|join:", " }}). Intenta de nuevo desde el carrito.
+<div class="confirmation-wrapper">
+  <div class="card-surface confirm-card">
+    <div class="confirm-status-icon">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
     </div>
-  {% endif %}
+    
+    <span class="status-badge-ok">¡Procesado Exitosamente!</span>
+    <h1>¡Gracias por tu compra{% if pedido.cliente_nombre %}, {{ pedido.cliente_nombre }}{% endif %}!</h1>
+    <p class="subtitle">Tu pedido ha sido guardado y enviado correctamente a través de la API de FastAPI hacia MongoDB Atlas.</p>
 
-  <a href="{% url 'index' %}" class="btn" style="margin-top:24px;">Seguir comprando</a>
+    {% if pedido.id %}
+      <div class="order-id-box">
+        <span class="order-id-label">Número de Pedido (ID en MongoDB)</span>
+        <code class="order-id-code">{{ pedido.id }}</code>
+      </div>
+    {% endif %}
+
+    {% if pedido %}
+      <div class="order-details-grid">
+        <div class="order-detail-card">
+          <h4>Datos del Cliente</h4>
+          <p><strong>Nombre:</strong> {{ pedido.cliente_nombre }}</p>
+          <p><strong>Email:</strong> {{ pedido.cliente_email }}</p>
+        </div>
+        <div class="order-detail-card">
+          <h4>Dirección de Envío</h4>
+          <p><strong>Dirección:</strong> {{ pedido.cliente_direccion }}</p>
+          <p><strong>Ciudad:</strong> {{ pedido.cliente_ciudad }}</p>
+        </div>
+      </div>
+
+      {% if pedido.items %}
+        <div class="order-items-summary">
+          <h4>Artículos Incluidos ({{ pedido.total_items }} unidades)</h4>
+          <ul>
+            {% for item in pedido.items %}
+              <li>
+                <span>{{ item.nombre }} (x{{ item.cantidad }})</span>
+                <span class="item-mat">{{ item.material }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    <div class="confirmation-actions">
+      <a href="{% url 'index' %}" class="btn btn-primary btn-lg">Volver al Catálogo</a>
+    </div>
+  </div>
 </div>
 
 {% endblock %}

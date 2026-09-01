@@ -40,9 +40,6 @@ INSTALLED_APPS = [
     "catalogo",
 ]
 
-STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -69,6 +66,7 @@ TEMPLATES = [
                 "catalogo.context_processors.carrito",
                 "catalogo.context_processors.carrito_count",
                 "catalogo.context_processors.carrito_total",
+                "django.contrib.auth.context_processors.auth",
             ],
         },
     },
@@ -122,7 +120,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 
 # Email

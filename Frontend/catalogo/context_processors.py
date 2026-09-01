@@ -4,11 +4,24 @@ def carrito(request):
 
 def carrito_count(request):
     carrito = request.session.get("carrito", {})
-    return {"carrito_count": sum(carrito.values())}
+    if isinstance(carrito, dict):
+        total = 0
+        for val in carrito.values():
+            if isinstance(val, int):
+                total += val
+            elif isinstance(val, dict):
+                total += val.get("cantidad", 0)
+        return {"carrito_count": total}
+    return {"carrito_count": 0}
+
 
 def carrito_total(request):
     carrito = request.session.get("carrito", {})
     total = 0
-    for item in carrito.values():
-        total += item["subtotal"]
+    if isinstance(carrito, dict):
+        for val in carrito.values():
+            if isinstance(val, dict):
+                total += val.get("subtotal", 0)
+            elif isinstance(val, int):
+                total += val
     return {"carrito_total": total}

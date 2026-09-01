@@ -1,35 +1,69 @@
 {% extends "catalogo/base.html" %}
-{% block title %}TechGear · Catálogo{% endblock %}
+{% block title %}TechGear · Catálogo de Productos{% endblock %}
 {% block content %}
 
-<div class="page-head">
-  <h1>Catálogo</h1>
-  <a href="{% url 'crear_producto' %}" class="btn ghost">+ Nuevo producto</a>
+<div class="hero-banner">
+  <div class="hero-content">
+    <span class="hero-tag">TechGear Hardware & Tools</span>
+    <h1>Catálogo de Componentes y Materiales</h1>
+    <p>Explora productos con especificaciones técnicas en tiempo real conectadas directamente con FastAPI.</p>
+  </div>
+  <div class="hero-actions">
+    <a href="{% url 'crear_producto' %}" class="btn btn-primary">+ Añadir Nuevo Producto</a>
+  </div>
 </div>
 
 {% if error %}
-  <p class="error">{{ error }}</p>
+<div class="alert error">
+  <span class="alert-icon">⚠️</span>
+  <div class="alert-content">
+    <strong>Problema al cargar el catálogo</strong>
+    <p>{{ error }}</p>
+  </div>
+</div>
 {% elif not productos %}
-  <div class="empty-state">
-    <p>No hay productos disponibles todavía.</p>
-    <a href="{% url 'crear_producto' %}" class="btn">Añadir el primero</a>
-  </div>
+<div class="empty-state-card">
+  <div class="empty-icon">📦</div>
+  <h2>No hay productos disponibles</h2>
+  <p>Aún no has registrado ningún producto en la base de datos de MongoDB.</p>
+  <a href="{% url 'crear_producto' %}" class="btn btn-primary btn-lg">Añadir el primer producto</a>
+</div>
 {% else %}
-  <div class="grid">
-    {% for p in productos %}
-    <div class="card">
-      <a href="{% url 'detalle' p.id %}" class="card-link">
-        <div class="card-icon">◆</div>
-        <h2>{{ p.nombre }}</h2>
-        <p class="muted">{{ p.material }}</p>
-        <div class="row">
-          <span>{{ p.peso }} kg</span>
-          <span>★ {{ p.valoracion }}</span>
-        </div>
-      </a>
+<div class="catalog-header-bar">
+  <h2>Todos los Productos</h2>
+  <span class="product-counter">{{ productos|length }} items encontrados</span>
+</div>
+
+<div class="products-grid">
+  {% for p in productos %}
+  <div class="product-card">
+    <div class="product-card-top">
+      <div class="product-avatar">⚙️</div>
+      <span class="rating-badge">★ {{ p.valoracion }}</span>
     </div>
-    {% endfor %}
+
+    <div class="product-card-body">
+      <h3 class="product-name">{{ p.nombre }}</h3>
+      <p class="product-material">Material: <strong>{{ p.material }}</strong></p>
+
+      <div class="product-specs-row">
+        <div class="spec-col">
+          <span class="spec-label">Peso</span>
+          <span class="spec-value">{{ p.peso }} kg</span>
+        </div>
+        <div class="spec-col">
+          <span class="spec-label">ID Corto</span>
+          <span class="spec-value font-mono">{{ p.id|slice:":6" }}...</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card-actions">
+      <a href="{% url 'detalle' p.id %}" class="btn btn-outline btn-block">Ver Ficha y Agregar</a>
+    </div>
   </div>
+  {% endfor %}
+</div>
 {% endif %}
 
 {% endblock %}

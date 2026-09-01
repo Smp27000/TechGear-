@@ -1,21 +1,37 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}TechGear{% endblock %}</title>
-  <link rel="stylesheet" href="/static/css/style.css">
+  <title>{% block title %}TechGear · Equipamiento Premium{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <span>🚀 Envíos express en todos los pedidos · Integración con FastAPI & MongoDB</span>
+    </div>
+  </div>
+
   <header>
     <div class="header-inner">
-      <a href="{% url 'index' %}" class="logo">TechGear</a>
+      <a href="{% url 'index' %}" class="logo">
+        <div class="logo-icon">⚡</div>
+        <span>Tech<span class="logo-accent">Gear</span></span>
+      </a>
       <nav>
-        <a href="{% url 'index' %}">Catálogo</a>
-        <a href="{% url 'crear_producto' %}">Añadir producto</a>
-        <a href="{% url 'carrito' %}" class="cart-link">
-          Carrito
-          {% if carrito_count %}<span class="badge">{{ carrito_count }}</span>{% endif %}
+        <a href="{% url 'index' %}" class="nav-link">Catálogo</a>
+        <a href="{% url 'crear_producto' %}" class="nav-link">+ Añadir Producto</a>
+        <a href="{% url 'carrito' %}" class="cart-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          <span>Carrito</span>
+          {% if carrito_count %}
+            <span class="cart-badge">{{ carrito_count }}</span>
+          {% endif %}
         </a>
       </nav>
     </div>
@@ -23,11 +39,44 @@
 
   <main>
     {% if messages %}
-      {% for m in messages %}
-        <div class="alert ok">{{ m }}</div>
-      {% endfor %}
+      <div class="messages-container">
+        {% for m in messages %}
+          <div class="alert ok">
+            <span class="alert-icon">✓</span>
+            <div class="alert-content">{{ m }}</div>
+          </div>
+        {% endfor %}
+      </div>
     {% endif %}
+
     {% block content %}{% endblock %}
   </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="logo">
+          <div class="logo-icon">⚡</div>
+          <span>Tech<span class="logo-accent">Gear</span></span>
+        </div>
+        <p>Plataforma moderna de gestión de catálogo y procesamiento de pedidos con arquitectura desacoplada Django & FastAPI.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Navegación</h4>
+        <a href="{% url 'index' %}">Catálogo de Productos</a>
+        <a href="{% url 'crear_producto' %}">Nuevo Registro</a>
+        <a href="{% url 'carrito' %}">Mi Carrito</a>
+      </div>
+      <div class="footer-links">
+        <h4>Arquitectura</h4>
+        <span>Django 5+ (Frontend SSR)</span>
+        <span>FastAPI (REST Backend)</span>
+        <span>MongoDB Atlas (NoSQL DB)</span>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 TechGear Store · Todos los derechos reservados.</p>
+    </div>
+  </footer>
 </body>
 </html>
