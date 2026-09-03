@@ -214,6 +214,8 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
-# Streamlit
-.streamlit/secrets.toml
->>>>>>> d19bda0d5efcfbd4488f24b614a8f4302912e2c7
+# Staticfiles / Build
+staticfiles/
+.vercel/
+build_files.sh
+

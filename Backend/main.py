@@ -1,20 +1,31 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
 from bson import ObjectId
 from Models import ProductoBase, PedidoBase
 from Database import collection, productos_collection, pedidos_collection
 
-app = FastAPI()
+app = FastAPI(title="TechGear API")
+
+# Habilitar CORS para permitir peticiones desde Vercel, Render o localhost
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
 async def home():
-    return {"mensaje": "API funcionando"}
+    return {"mensaje": "API funcionando", "status": "online"}
 
 
 # ---------------- PRODUCTOS ----------------
 
-@app.post("/productos")
+@app.post("/productos", status_code=status.HTTP_201_CREATED)
 async def crear_producto(producto: ProductoBase):
+
     nuevo = await productos_collection.insert_one(producto.model_dump())
     return {"id": str(nuevo.inserted_id)}
 
@@ -69,8 +80,9 @@ async def eliminar_producto(producto_id: str):
 
 # ---------------- PEDIDOS ----------------
 
-@app.post("/pedidos")
+@app.post("/pedidos", status_code=status.HTTP_201_CREATED)
 async def crear_pedido(pedido: PedidoBase):
+
     # Validar que cada producto exista antes de crear el pedido
     for item in pedido.items:
         try:

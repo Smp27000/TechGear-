@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: techgear-frontend
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn techgear.wsgi:application --bind 0.0.0.0:$PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: API_URL
+        sync: false

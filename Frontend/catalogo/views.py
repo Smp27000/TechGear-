@@ -1,9 +1,11 @@
+import os
 import requests
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
-API_URL = "http://127.0.0.1:8000"
+API_URL = os.getenv("API_URL", "http://127.0.0.1:8000").rstrip("/")
 CART_KEY = "carrito"
+
 
 
 def _get_cart(request):

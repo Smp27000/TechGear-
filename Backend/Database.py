@@ -9,9 +9,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 MONGO_URI = os.getenv("MONGODB_URI")
-client = AsyncIOMotorClient(MONGO_URI)
-db = client.samuelpalaciohoyos_db_user
-collection = db["taller 2"]
+DB_NAME = os.getenv("DB_NAME", "samuelpalaciohoyos_db_user")
+client = AsyncIOMotorClient(MONGO_URI) if MONGO_URI else None
+db = client[DB_NAME] if client else None
+collection = db["taller 2"] if db is not None else None
+productos_collection = db["productos"] if db is not None else None
+pedidos_collection = db["pedidos"] if db is not None else None
+
 
 async def test_collection():
     try:
@@ -45,7 +49,4 @@ async def test_collection():
     except Exception as e:
         print(f"Error al conectar a MongoDB Atlas: {e}")
 if __name__ == "__main__":
-    asyncio.run(test_collection())
-
-productos_collection = db["productos"]
-pedidos_collection = db["pedidos"]
+    asyncio.run(test_collection())
